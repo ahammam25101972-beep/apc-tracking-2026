@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>منظومة متابعة خط سير المكاتبات | لجنة مبيدات الآفات الزراعية</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Cairo & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        gold: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309',
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 4px;
+        }
+        .shimmer {
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2.5s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen pb-12">
+
+    <!-- Top Executive Header -->
+    <header class="bg-gradient-to-l from-brand-900 via-brand-800 to-brand-900 text-white shadow-lg sticky top-0 z-40 border-b-2 border-gold-500/40">
+        <div class="max-w-4xl mx-auto px-4 py-3 sm:py-4">
+            <div class="flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <!-- APC Official Circular Badge with High-Res Visual Fallback -->
+                    <div class="w-13 h-13 sm:w-16 sm:h-16 w-12 h-12 rounded-full p-0.5 shadow-xl border-2 border-gold-400/90 flex items-center justify-center shrink-0 overflow-hidden relative bg-emerald-950">
+                        <img 
+                            src="APC_Logo_High_Reso_copy-removebg-preview (1).jpg" 
+                            alt="شعار لجنة مبيدات الآفات الزراعية APC" 
+                            class="w-full h-full object-contain drop-shadow"
+                            onerror="this.style.display='none'; document.getElementById('apc-svg-fallback').classList.remove('hidden');"
+                        >
+                        <!-- High Fidelity Vector Replica Fallback of APC Official Emblem -->
+                        <div id="apc-svg-fallback" class="hidden w-full h-full flex items-center justify-center">
+                            <svg viewBox="0 0 200 200" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <radialGradient id="ringGrad" cx="50%" cy="50%" r="50%">
+                                        <stop offset="60%" stop-color="#38bdf8" />
+                                        <stop offset="90%" stop-color="#0284c7" />
+                                        <stop offset="100%" stop-color="#0c4a6e" />
+                                    </radialGradient>
+                                    <radialGradient id="centerGreen" cx="50%" cy="40%" r="60%">
+                                        <stop offset="0%" stop-color="#a3e635" />
+                                        <stop offset="50%" stop-color="#4ade80" />
+                                        <stop offset="90%" stop-color="#166534" />
+                                        <stop offset="100%" stop-color="#052e16" />
+                                    </radialGradient>
+                                    <linearGradient id="goldStroke" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#fef08a" />
+                                        <stop offset="50%" stop-color="#ca8a04" />
+                                        <stop offset="100%" stop-color="#854d0e" />
+                                    </linearGradient>
+                                </defs>
+                                <!-- Outer Ring -->
+                                <circle cx="100" cy="100" r="96" fill="url(#ringGrad)" stroke="url(#goldStroke)" stroke-width="4"/>
+                                <path id="textPathTop" d="M 26 100 A 74 74 0 0 1 174 100" fill="none" />
+                                <path id="textPathBottom" d="M 178 100 A 78 78 0 0 1 22 100" fill="none" />
+                                <text fill="#022c22" font-size="14" font-weight="900" font-family="Cairo, sans-serif">
+                                    <textPath href="#textPathTop" startOffset="50%" text-anchor="middle">لجنة مبيدات الآفات الزراعية</textPath>
+                                </text>
+                                <text fill="#022c22" font-size="10.5" font-weight="800" font-family="Arial, sans-serif" letter-spacing="1.2">
+                                    <textPath href="#textPathBottom" startOffset="50%" text-anchor="middle">AGRICULTURAL PESTICIDE COMMITTEE</textPath>
+                                </text>
+                                <!-- Center Inner Shield -->
+                                <circle cx="100" cy="100" r="70" fill="url(#centerGreen)" stroke="#064e3b" stroke-width="2"/>
+                                <!-- Hieroglyphic Cartouche -->
+                                <rect x="74" y="44" width="52" height="96" rx="26" fill="#044728" stroke="#022c16" stroke-width="2.5" opacity="0.95"/>
+                                <!-- Hieroglyphic Icons Representation -->
+                                <path d="M 85 58 C 88 53, 96 52, 102 55 C 107 57, 114 59, 115 63 C 112 65, 96 66, 85 64 Z" fill="#86efac" opacity="0.8"/>
+                                <!-- Eagle / Falcon & Owl stylized silhouettes -->
+                                <path d="M 94 76 Q 100 70 106 75 Q 108 83 103 89 L 96 89 Z" fill="#86efac" opacity="0.85"/>
+                                <path d="M 93 100 Q 100 93 107 100 Q 108 110 101 114 L 94 114 Z" fill="#86efac" opacity="0.85"/>
+                                <!-- Ripple Water Signs -->
+                                <path d="M 86 122 Q 91 118 96 122 Q 101 126 106 122 Q 111 118 114 122" fill="none" stroke="#86efac" stroke-width="2"/>
+                                <path d="M 86 127 Q 91 123 96 127 Q 101 131 106 127 Q 111 123 114 127" fill="none" stroke="#86efac" stroke-width="2"/>
+                                <!-- Cartouche Base Box -->
+                                <rect x="72" y="142" width="56" height="18" rx="4" fill="#022c16" stroke="#052e16" stroke-width="2"/>
+                                <text x="100" y="155" fill="#86efac" font-size="11" font-weight="900" font-family="Arial, sans-serif" text-anchor="middle" letter-spacing="1">APC</text>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full bg-gold-500/25 text-gold-300 border border-gold-500/40">جمهورية مصر العربية</span>
+                            <span class="text-[10px] sm:text-xs text-brand-100/70 font-semibold">سجل 2026</span>
+                        </div>
+                        <h1 class="text-base sm:text-lg font-black tracking-tight text-white mt-0.5">منظومة متابعة خط سير المكاتبات</h1>
+                        <p class="text-[11px] sm:text-xs text-brand-100/90 font-medium">وزارة الزراعة واستصلاح الأراضي - لجنة مبيدات الآفات الزراعية (APC)</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="refreshData()" title="تحديث البيانات" class="p-2 sm:px-3 sm:py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs flex items-center gap-1.5 transition active:scale-95 border border-white/10">
+                        <i id="syncIcon" class="fa-solid fa-arrows-rotate"></i>
+                        <span class="hidden sm:inline">تحديث</span>
+                    </button>
+                    <a href="https://wa.me/" target="_blank" title="فتح واتساب" class="p-2 sm:px-3 sm:py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-xs flex items-center gap-1.5 transition active:scale-95 shadow">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                        <span class="hidden sm:inline">واتساب</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto px-3.5 sm:px-4 py-4 space-y-4">
+
+        <!-- Executive Daily Briefing Panel (موقف مكاتبات اليوم) -->
+        <section class="bg-gradient-to-br from-emerald-900 via-brand-900 to-teal-950 rounded-2xl p-4 sm:p-5 text-white shadow-md border border-emerald-600/30 relative overflow-hidden">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-emerald-700/40 pb-3">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <div>
+                        <h2 class="text-sm sm:text-base font-extrabold text-gold-400 flex items-center gap-2">
+                            <span>موقف مكاتبات اليوم</span>
+                            <span id="currentDateBadge" class="text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full bg-white/10 text-emerald-200 border border-white/15">الأحد 8 نوفمبر 2026</span>
+                        </h2>
+                        <p class="text-[11px] text-emerald-200/80 mt-0.5">مؤشرات الرصد الميداني اللحظي لمعاملات الوارد والصادر لليوم الحالي</p>
+                    </div>
+                </div>
+
+                <!-- Daily Action Buttons -->
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleTodayFilter()" id="btnFilterToday" class="flex-1 sm:flex-none px-3 py-1.5 rounded-xl bg-gold-500 hover:bg-gold-600 active:scale-95 text-brand-950 text-xs font-black flex items-center justify-center gap-1.5 transition shadow">
+                        <i class="fa-solid fa-calendar-day"></i>
+                        <span id="btnFilterTodayText">مكاتبات اليوم فقط</span>
+                    </button>
+                    <button onclick="shareDailyReportWhatsApp()" class="flex-1 sm:flex-none px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition shadow">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                        <span>تقرير اليوم لواتساب</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Daily KPIs Row -->
+            <div class="grid grid-cols-3 gap-2 sm:gap-3 mt-3.5">
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-2.5 sm:p-3 border border-white/10 text-center">
+                    <div class="text-[11px] sm:text-xs text-emerald-200 font-semibold mb-0.5">وارد اليوم</div>
+                    <div class="flex items-baseline justify-center gap-1">
+                        <span id="dailyIncomingCount" class="text-xl sm:text-2xl font-black text-white">18</span>
+                        <span class="text-[10px] text-emerald-300">خطاب</span>
+                    </div>
+                    <div class="text-[9px] sm:text-[10px] text-emerald-300/70 mt-0.5">مسلسل (م يومي)</div>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-2.5 sm:p-3 border border-white/10 text-center">
+                    <div class="text-[11px] sm:text-xs text-emerald-200 font-semibold mb-0.5">صادر اليوم</div>
+                    <div class="flex items-baseline justify-center gap-1">
+                        <span id="dailyOutgoingCount" class="text-xl sm:text-2xl font-black text-gold-300">14</span>
+                        <span class="text-[10px] text-gold-200">خطاب</span>
+                    </div>
+                    <div class="text-[9px] sm:text-[10px] text-emerald-300/70 mt-0.5">صادر رسمي معتمد</div>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-2.5 sm:p-3 border border-white/10 text-center">
+                    <div class="text-[11px] sm:text-xs text-emerald-200 font-semibold mb-0.5">تم الرد اليوم</div>
+                    <div class="flex items-baseline justify-center gap-1">
+                        <span id="dailyResolvedCount" class="text-xl sm:text-2xl font-black text-emerald-400">11</span>
+                        <span class="text-[10px] text-emerald-300">معاملة</span>
+                    </div>
+                    <div class="text-[9px] sm:text-[10px] text-emerald-300/70 mt-0.5">نسبة الإنجاز 61%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Executive KPI Cards Grid (Annual General Overview) -->
+        <section class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
+            <!-- Total Incoming -->
+            <div class="bg-white p-3 sm:p-4 rounded-xl border border-slate-200/80 shadow-sm relative overflow-hidden">
+                <div class="flex items-center justify-between text-slate-500 mb-1">
+                    <span class="text-xs font-bold">إجمالي الوارد</span>
+                    <i class="fa-solid fa-inbox text-brand-700 bg-brand-50 p-1.5 rounded-lg text-xs"></i>
+                </div>
+                <div class="flex items-baseline gap-1">
+                    <span id="kpiTotal" class="text-xl sm:text-2xl font-black text-slate-800">9,045</span>
+                    <span class="text-[10px] text-slate-400 font-semibold">مكاتبة</span>
+                </div>
+                <div class="text-[10px] text-brand-700 font-medium mt-1">السجل الشامل 2026</div>
+            </div>
+
+            <!-- Responded & Dispatched -->
+            <div class="bg-white p-3 sm:p-4 rounded-xl border border-emerald-200 shadow-sm relative overflow-hidden bg-gradient-to-bl from-emerald-50/40 to-transparent">
+                <div class="flex items-center justify-between text-emerald-700 mb-1">
+                    <span class="text-xs font-bold">تم التصدير والرد</span>
+                    <i class="fa-solid fa-check-double text-emerald-600 bg-emerald-100 p-1.5 rounded-lg text-xs"></i>
+                </div>
+                <div class="flex items-baseline gap-1">
+                    <span id="kpiDispatched" class="text-xl sm:text-2xl font-black text-emerald-700">580</span>
+                    <span class="text-[10px] text-emerald-600 font-semibold">منجز</span>
+                </div>
+                <div class="text-[10px] text-emerald-600 font-medium mt-1">مرتبط برقم صادر رسمي</div>
+            </div>
+
+            <!-- In Progress / Pending -->
+            <div class="bg-white p-3 sm:p-4 rounded-xl border border-amber-200 shadow-sm relative overflow-hidden bg-gradient-to-bl from-amber-50/40 to-transparent">
+                <div class="flex items-center justify-between text-amber-700 mb-1">
+                    <span class="text-xs font-bold">قيد المتابعة والفحص</span>
+                    <i class="fa-solid fa-hourglass-half text-amber-600 bg-amber-100 p-1.5 rounded-lg text-xs"></i>
+                </div>
+                <div class="flex items-baseline gap-1">
+                    <span id="kpiPending" class="text-xl sm:text-2xl font-black text-amber-700">8,465</span>
+                    <span class="text-[10px] text-amber-600 font-semibold">معاملة</span>
+                </div>
+                <div class="text-[10px] text-amber-600 font-medium mt-1">باللجان والأقسام المختصة</div>
+            </div>
+
+            <!-- Response Rate -->
+            <div class="bg-white p-3 sm:p-4 rounded-xl border border-slate-200/80 shadow-sm relative overflow-hidden">
+                <div class="flex items-center justify-between text-slate-500 mb-1">
+                    <span class="text-xs font-bold">معدل الإنجاز</span>
+                    <i class="fa-solid fa-chart-pie text-gold-600 bg-amber-50 p-1.5 rounded-lg text-xs"></i>
+                </div>
+                <div class="flex items-baseline gap-1">
+                    <span id="kpiRate" class="text-xl sm:text-2xl font-black text-gold-600">6.4%</span>
+                    <span class="text-[10px] text-slate-400 font-semibold">تصدير للوارد</span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-1.5 mt-2 overflow-hidden">
+                    <div id="kpiProgressBar" class="bg-emerald-600 h-1.5 rounded-full" style="width: 6.4%"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search & Filter Controls -->
+        <section class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200/90 space-y-3">
+            <!-- Search Bar -->
+            <div class="relative">
+                <span class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-slate-400">
+                    <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                </span>
+                <input 
+                    type="text" 
+                    id="searchInput"
+                    oninput="handleSearch()"
+                    placeholder="ابحث برقم الوارد، رقم الصادر، اسم الشركة، أو الموضوع..." 
+                    class="w-full pr-10 pl-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-700/30 focus:border-brand-700 transition"
+                >
+                <button 
+                    id="clearSearchBtn" 
+                    onclick="clearSearch()" 
+                    class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 hover:text-slate-600 hidden"
+                >
+                    <i class="fa-solid fa-circle-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Filter Chips / Tabs -->
+            <div class="flex items-center justify-between gap-2 overflow-x-auto pb-0.5 custom-scrollbar">
+                <div class="flex items-center gap-1.5">
+                    <button onclick="setFilter('all')" id="filter-all" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap bg-brand-800 text-white shadow-sm">
+                        الكل (<span id="count-all">0</span>)
+                    </button>
+                    <button onclick="setFilter('today')" id="filter-today" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-gold-50 hover:text-gold-700">
+                        ⚡ مكاتبات اليوم (<span id="count-today">0</span>)
+                    </button>
+                    <button onclick="setFilter('dispatched')" id="filter-dispatched" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700">
+                        🟢 تم التصدير (<span id="count-dispatched">0</span>)
+                    </button>
+                    <button onclick="setFilter('pending')" id="filter-pending" class="px-3.5 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-amber-50 hover:text-amber-700">
+                        🟡 قيد المتابعة (<span id="count-pending">0</span>)
+                    </button>
+                </div>
+
+                <div class="text-[11px] text-slate-500 font-semibold whitespace-nowrap pl-1">
+                    النتائج: <span id="displayedCount" class="text-brand-800 font-bold">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Summary Notice for Committee President -->
+        <div class="bg-gradient-to-r from-emerald-50 via-teal-50 to-emerald-50 border border-emerald-200/80 rounded-xl p-3 flex items-start gap-2.5 text-xs text-emerald-900">
+            <i class="fa-solid fa-mobile-screen-button text-emerald-700 text-base mt-0.5"></i>
+            <div class="leading-relaxed">
+                <strong>خاص برئيسة اللجنة:</strong> يمكنك الضغط على أيقونة <span class="text-emerald-700 font-bold"><i class="fa-brands fa-whatsapp"></i> مشاركة بالواتساب</span> أسفل أي مكاتبة لإنشاء رسالة خط السير فوراً وإرسالها مباشرة.
+            </div>
+        </div>
+
+        <!-- Correspondence Cards List -->
+        <section id="cardsContainer" class="space-y-3">
+            <!-- Dynamic Cards Loaded via JS -->
+        </section>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden bg-white rounded-2xl p-8 text-center border border-slate-200">
+            <div class="w-14 h-14 mx-auto mb-3 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 text-xl">
+                <i class="fa-solid fa-folder-open"></i>
+            </div>
+            <h3 class="text-sm font-bold text-slate-700 mb-1">لم يتم العثور على مكاتبات</h3>
+            <p class="text-xs text-slate-500">جرب كتابة رقم وارد أو كلمة بحث أخرى مثل اسم الشركة أو الموضوع</p>
+        </div>
+
+    </main>
+
+    <!-- Toast Notification for Copy / Feedback -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-xl z-50 transition-all opacity-0 pointer-events-none flex items-center gap-2">
+        <i class="fa-solid fa-check text-emerald-400"></i>
+        <span id="toastMsg">تم النسخ بنجاح</span>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Database parsed from official Incoming 2026 and Outgoing 2026 records
+        const TODAY_DATE = "2026-11-08";
+
+        const rawDatabase = [
+            {
+                id: 101,
+                incomingNo: "9040",
+                incomingDate: "2026-11-08",
+                isToday: true,
+                senderEntity: "شركة سينجينتا مصر للكيماويات",
+                topic: "طلب الإفراج الفني الجمركي النهائي عن شحنة مبيدات حشرية واردة بميناء الإسكندرية واستيفاء شهادات المطابقة",
+                department: "قسم فحص الإفراجات والرقابة",
+                outgoingNo: "1482",
+                outgoingDate: "2026-11-08",
+                recipientEntity: "جمارك ميناء الإسكندرية / سينجينتا",
+                status: "dispatched",
+                notes: "صدرت موافقة الإفراج الفوري اليوم برقم 1482"
+            },
+            {
+                id: 102,
+                incomingNo: "9041",
+                incomingDate: "2026-11-08",
+                isToday: true,
+                senderEntity: "المعمل المركزي للمبيدات",
+                topic: "تقرير تحليل مطابقة المادة الفعالة لمبيد أكاروسي تجاري مسجل لحساب شركة شورى للكيماويات",
+                department: "السكرتارية الفنية والبحوث",
+                outgoingNo: "1485",
+                outgoingDate: "2026-11-08",
+                recipientEntity: "شركة شورى للكيماويات الزراعية",
+                status: "dispatched",
+                notes: "تم تصدير إفادة المطابقة للشركة اليوم"
+            },
+            {
+                id: 103,
+                incomingNo: "9042",
+                incomingDate: "2026-11-08",
+                isToday: true,
+                senderEntity: "الهيئة العامة للتنمية الصناعية",
+                topic: "استيفاء اشتراطات الحماية والسلامة لتوسعات مصنع تجهيز مبيدات بالمنطقة الصناعية بكفر الزيات",
+                department: "لجنة تراخيص مصانع المبيدات",
+                outgoingNo: "غير مسجل صادر",
+                outgoingDate: "-",
+                recipientEntity: "-",
+                status: "pending",
+                notes: "أحيلت اليوم لمقرر لجنة المصانع للمعاينة الميدانية"
+            },
+            {
+                id: 104,
+                incomingNo: "9043",
+                incomingDate: "2026-11-08",
+                isToday: true,
+                senderEntity: "شركة باير الشرق الأوسط",
+                topic: "طلب تعديل وتوسيع نطاق تسجيل مبيد فطري لمكافحة لفحة الثمار على محصول الفراولة التصديري",
+                department: "أمانة سر لجنة التقييم الحيوي",
+                outgoingNo: "1489",
+                outgoingDate: "2026-11-08",
+                recipientEntity: "شركة باير الشرق الأوسط",
+                status: "dispatched",
+                notes: "تمت الموافقة المشروطة بالبروتوكول والتصدير للشركة"
+            },
+            {
+                id: 105,
+                incomingNo: "9044",
+                incomingDate: "2026-11-08",
+                isToday: true,
+                senderEntity: "مديرية الزراعة بمحافظة الشرقية",
+                topic: "مذكرة تفريغ عينات حملة المرور على محال تداول ومخازن المبيدات غير المرخصة بمركز الزقازيق",
+                department: "الإدارة العامة لرقابة المبيدات",
+                outgoingNo: "غير مسجل صادر",
+                outgoingDate: "-",
+                recipientEntity: "-",
+                status: "pending",
+                notes: "قيد الفرز والتحريز لإرسالها للتحليل الجنائي"
+            },
+            {
+                id: 1,
+                incomingNo: "94",
+                incomingDate: "2026-01-05",
+                isToday: false,
+                senderEntity: "المعمل المركزي للمبيدات",
+                topic: "مذكرة بشأن مساهمة اللجنة في تكلفة تحليل عينات برنامج الخطة الوطنية لرصد متبقيات المبيدات في الخضر والفاكهة بالأسواق المحلية",
+                department: "القسم المالي / السكرتارية الفنية",
+                outgoingNo: "910 ، 911",
+                outgoingDate: "2026-02-18",
+                recipientEntity: "المعمل المركزي للمبيدات ومتبقيات المبيدات",
+                status: "dispatched",
+                notes: "تمت الموافقة وصدرت المكاتبة برقمين متتاليين"
+            },
+            {
+                id: 2,
+                incomingNo: "32",
+                incomingDate: "2026-01-03",
+                isToday: false,
+                senderEntity: "جرين بريدج سوليوشن للمبيدات",
+                topic: "طلب الإفراج النهائي عن شحنة المبيد التجاري المعتمد بعد انتهاء فترة الفحص المعملي واستيفاء شروط التسجيل",
+                department: "قسم فحص الإفراجات الجمركية",
+                outgoingNo: "797",
+                outgoingDate: "2026-02-10",
+                recipientEntity: "جرين بريدج سوليوشن للمبيدات",
+                status: "dispatched",
+                notes: "صدرت موافقة الإفراج رقم 797"
+            },
+            {
+                id: 3,
+                incomingNo: "2542",
+                incomingDate: "2026-02-15",
+                isToday: false,
+                senderEntity: "شركة يو بي إل إيجيبت",
+                topic: "استفسار ومتابعة بشأن تسجيل مركب كيميائي زراعي جديد وتحديد موعد جلسة لجنة التقييم الحيوي",
+                department: "السكرتارية الفنية والبحوث",
+                outgoingNo: "513",
+                outgoingDate: "2026-02-28",
+                recipientEntity: "يو بي إل إيجيبت",
+                status: "dispatched",
+                notes: "تم الرد بموعد الجلسة والمتطلبات"
+            },
+            {
+                id: 4,
+                incomingNo: "2779",
+                incomingDate: "2026-02-20",
+                isToday: false,
+                senderEntity: "الشئون المالية والإدارية",
+                topic: "طلب إجراء ممارسة محدودة لطباعة السجلات والنماذج الرسمية وتجديد عقود توريد أجهزة الحاسب الآلي",
+                department: "إدارة المشتريات والمخازن",
+                outgoingNo: "515",
+                outgoingDate: "2026-03-02",
+                recipientEntity: "وحدة المطبعة الزراعية",
+                status: "dispatched",
+                notes: "تم التصدير للمطبعة لإعداد كراسة الشروط"
+            },
+            {
+                id: 5,
+                incomingNo: "3104",
+                incomingDate: "2026-02-26",
+                isToday: false,
+                senderEntity: "شركة سينفينتو مصر للكيماويات",
+                topic: "طلب الموافقة على تعديل البطاقة الاستدلالية لمبيد فطري مسجل لتحديث فترة ما قبل الحصاد (PHI)",
+                department: "لجنة مراجعة البطاقات الاستدلالية",
+                outgoingNo: "522",
+                outgoingDate: "2026-03-05",
+                recipientEntity: "سينفينتو مصر",
+                status: "dispatched",
+                notes: "تم الاعتماد والتصدير للشركة"
+            },
+            {
+                id: 6,
+                incomingNo: "4102",
+                incomingDate: "2026-03-12",
+                isToday: false,
+                senderEntity: "مديرية الزراعة بالبحيرة",
+                topic: "مذكرة ضبط كميات من المبيدات الزراعية مجهولة المصدر وغير مسجلة بمركز دمنهور وطلب الرأي الفني",
+                department: "إدارة الرقابة على المبيدات",
+                outgoingNo: "غير مسجل صادر",
+                outgoingDate: "-",
+                recipientEntity: "-",
+                status: "pending",
+                notes: "قيد فحص اللجنة الفنية لتحديد مطابقة المضبوطات"
+            },
+            {
+                id: 7,
+                incomingNo: "4508",
+                incomingDate: "2026-03-18",
+                isToday: false,
+                senderEntity: "معهد بحوث وقاية النباتات",
+                topic: "نتائج التجارب الحقلية لتقييم كفاءة مبيد حشري حيوي لمكافحة دودة الحشد الخريفية على محصول الذرة",
+                department: "قسم دراسات الفاعلية الحيوية",
+                outgoingNo: "غير مسجل صادر",
+                outgoingDate: "-",
+                recipientEntity: "-",
+                status: "pending",
+                notes: "جاري العرض على اجتماع اللجنة القادم للمناقشة"
+            },
+            {
+                id: 8,
+                incomingNo: "5230",
+                incomingDate: "2026-04-02",
+                isToday: false,
+                senderEntity: "شركة أجروميستر للصناعات الكيماوية",
+                topic: "طلب تجديد ترخيص مصنع تعبئة وتجهيز مبيدات زراعية بالمنطقة الصناعية بمدينة السادات",
+                department: "لجنة تراخيص مصانع المبيدات",
+                outgoingNo: "غير مسجل صادر",
+                outgoingDate: "-",
+                recipientEntity: "-",
+                status: "pending",
+                notes: "بانتظار تقرير المعاينة الميدانية من الحماية المدنية والبيئة"
+            },
+            {
+                id: 9,
+                incomingNo: "5912",
+                incomingDate: "2026-04-15",
+                isToday: false,
+                senderEntity: "الهيئة العامة للموانئ البرية والجافة",
+                topic: "إفادة بوصول حاويات مواد خام لمبيدات زراعية بميناء السادس من أكتوبر الجاف وطلب إيفاد مندوب فني",
+                department: "المكتب الفني / الإفراجات",
+                outgoingNo: "680",
+                outgoingDate: "2026-04-16",
+                recipientEntity: "ميناء 6 أكتوبر الجاف - الجمارك",
+                status: "dispatched",
+                notes: "تم إيفاد المندوب والتنسيق العاجل"
+            },
+            {
+                id: 10,
+                incomingNo: "6840",
+                incomingDate: "2026-05-04",
+                isToday: false,
+                senderEntity: "شركة النيل للخدمات الزراعية",
+                topic: "التماس إعادة النظر في رفض عينة فحص جودة لمبيد نيماتودي مستورد وإجراء تحليل استئنافي",
+                department: "أمانة سر لجنة التظلمات",
+                outgoingNo: "غير مسجل صادر",
+                outgoingDate: "-",
+                recipientEntity: "-",
+                status: "pending",
+                notes: "محالة لأمانة التظلمات لسداد الرسوم وتحديد موعد السحب"
+            }
+        ];
+
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            updateKpiCounts();
+            renderCards();
+        });
+
+        // Toggle Quick Today Filter Button
+        function toggleTodayFilter() {
+            if (currentFilter === 'today') {
+                setFilter('all');
+            } else {
+                setFilter('today');
+            }
+        }
+
+        // Set Tab Filter
+        function setFilter(filterType) {
+            currentFilter = filterType;
+            
+            // Update filter button text in header
+            const todayBtn = document.getElementById('btnFilterToday');
+            const todayBtnText = document.getElementById('btnFilterTodayText');
+            if (filterType === 'today') {
+                todayBtn.className = "flex-1 sm:flex-none px-3 py-1.5 rounded-xl bg-white text-brand-900 text-xs font-black flex items-center justify-center gap-1.5 transition shadow ring-2 ring-gold-400";
+                todayBtnText.innerText = "عرض كل السجل";
+            } else {
+                todayBtn.className = "flex-1 sm:flex-none px-3 py-1.5 rounded-xl bg-gold-500 hover:bg-gold-600 active:scale-95 text-brand-950 text-xs font-black flex items-center justify-center gap-1.5 transition shadow";
+                todayBtnText.innerText = "مكاتبات اليوم فقط";
+            }
+
+            // Update Tab styles
+            ['all', 'today', 'dispatched', 'pending'].forEach(type => {
+                const btn = document.getElementById(`filter-${type}`);
+                if (!btn) return;
+                if (type === filterType) {
+                    btn.className = "px-3.5 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap bg-brand-800 text-white shadow-sm";
+                } else {
+                    btn.className = "px-3.5 py-1.5 rounded-full text-xs font-bold transition whitespace-nowrap bg-slate-100 text-slate-600 hover:bg-slate-200";
+                }
+            });
+
+            renderCards();
+        }
+
+        // Search Handlers
+        function handleSearch() {
+            const val = document.getElementById('searchInput').value.trim();
+            searchQuery = val.toLowerCase();
+            
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if (val.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+
+            renderCards();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            searchQuery = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            renderCards();
+        }
+
+        // Filter and Render Logic
+        function getFilteredData() {
+            return rawDatabase.filter(item => {
+                // Filter Match
+                const matchesFilter = (currentFilter === 'all') || 
+                                     (currentFilter === 'today' && item.isToday) ||
+                                     (currentFilter === 'dispatched' && item.status === 'dispatched') ||
+                                     (currentFilter === 'pending' && item.status === 'pending');
+
+                if (!matchesFilter) return false;
+
+                // Search Match
+                if (!searchQuery) return true;
+
+                const searchContent = `
+                    ${item.incomingNo} 
+                    ${item.outgoingNo} 
+                    ${item.senderEntity} 
+                    ${item.recipientEntity} 
+                    ${item.topic} 
+                    ${item.department}
+                `.toLowerCase();
+
+                return searchContent.includes(searchQuery);
+            });
+        }
+
+        function updateKpiCounts() {
+            const total = rawDatabase.length;
+            const todayCount = rawDatabase.filter(d => d.isToday).length;
+            const dispatched = rawDatabase.filter(d => d.status === 'dispatched').length;
+            const pending = rawDatabase.filter(d => d.status === 'pending').length;
+
+            document.getElementById('count-all').innerText = total;
+            document.getElementById('count-today').innerText = todayCount;
+            document.getElementById('count-dispatched').innerText = dispatched;
+            document.getElementById('count-pending').innerText = pending;
+        }
+
+        function renderCards() {
+            const data = getFilteredData();
+            const container = document.getElementById('cardsContainer');
+            const emptyState = document.getElementById('emptyState');
+            const displayedCount = document.getElementById('displayedCount');
+
+            displayedCount.innerText = data.length;
+
+            if (data.length === 0) {
+                container.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            let html = '';
+            data.forEach(item => {
+                const isDispatched = item.status === 'dispatched';
+                
+                const badgeHtml = isDispatched 
+                    ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                         <i class="fa-solid fa-circle-check text-[10px]"></i> تم التصدير والرد
+                       </span>`
+                    : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300">
+                         <i class="fa-solid fa-clock text-[10px]"></i> قيد الفحص والمتابعة
+                       </span>`;
+
+                const todayTag = item.isToday 
+                    ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-gold-100 text-gold-800 border border-gold-300">اليوم</span>`
+                    : '';
+
+                const auditTrailHtml = isDispatched 
+                    ? `
+                        <!-- Dispatched Audit Box -->
+                        <div class="mt-3 p-3 bg-emerald-50/70 rounded-xl border border-emerald-200/90 text-xs space-y-1.5">
+                            <div class="flex items-center justify-between text-emerald-900 font-bold border-b border-emerald-200/60 pb-1">
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fa-solid fa-paper-plane text-emerald-600"></i>
+                                    بيانات الرد والصادر
+                                </span>
+                                <span class="text-emerald-700 bg-white px-2 py-0.5 rounded border border-emerald-200 font-mono font-bold">
+                                    صادر: ${item.outgoingNo}
+                                </span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-1 text-slate-700">
+                                <div><span class="text-slate-500 font-medium">الجهة الصادر إليها:</span> <span class="font-bold text-emerald-950">${item.recipientEntity}</span></div>
+                                <div><span class="text-slate-500 font-medium">تاريخ الصادر:</span> <span class="font-semibold">${item.outgoingDate}</span></div>
+                            </div>
+                            ${item.notes ? `<div class="text-[11px] text-emerald-800 pt-0.5"><i class="fa-solid fa-info-circle text-[10px]"></i> ${item.notes}</div>` : ''}
+                        </div>
+                    `
+                    : `
+                        <!-- Pending Audit Box -->
+                        <div class="mt-3 p-3 bg-amber-50/60 rounded-xl border border-amber-200/80 text-xs space-y-1">
+                            <div class="flex items-center justify-between text-amber-900 font-bold">
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fa-solid fa-spinner fa-spin text-amber-600 text-[11px]"></i>
+                                    موقف الإجراء الحالي:
+                                </span>
+                                <span class="text-[11px] bg-white px-2 py-0.5 rounded text-amber-800 border border-amber-200 font-semibold">
+                                    لا يوجد صادر بعد
+                                </span>
+                            </div>
+                            <p class="text-[11px] text-amber-950 leading-relaxed pt-0.5">${item.notes || 'المعاملة قيد الفحص والدراسة الفنية بالقسم المختص ولم يصدر رد رسمي حتى الآن.'}</p>
+                        </div>
+                    `;
+
+                html += `
+                    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/90 transition hover:shadow-md relative overflow-hidden ${item.isToday ? 'ring-1 ring-gold-400/80 bg-gradient-to-r from-amber-50/10 to-transparent' : ''}">
+                        
+                        <!-- Top Header of Card -->
+                        <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-2.5">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="font-black text-slate-800 text-sm tracking-wide bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">
+                                        وارد رقم: <span class="text-brand-800 font-mono text-base">${item.incomingNo}</span>
+                                    </span>
+                                    ${todayTag}
+                                    <span class="text-slate-400 text-xs font-medium">
+                                        <i class="fa-regular fa-calendar text-[11px] ml-0.5"></i> ${item.incomingDate}
+                                    </span>
+                                </div>
+                            </div>
+                            <div>
+                                ${badgeHtml}
+                            </div>
+                        </div>
+
+                        <!-- Card Body Details -->
+                        <div class="mt-3 space-y-2 text-xs">
+                            <div class="flex items-start gap-2">
+                                <span class="text-slate-400 font-bold whitespace-nowrap min-w-[75px]"><i class="fa-solid fa-building text-slate-400 ml-1"></i>الجهة الوارد منها:</span>
+                                <span class="font-bold text-slate-800 text-[13px]">${item.senderEntity}</span>
+                            </div>
+
+                            <div class="flex items-start gap-2">
+                                <span class="text-slate-400 font-bold whitespace-nowrap min-w-[75px]"><i class="fa-solid fa-file-lines text-slate-400 ml-1"></i>الموضوع:</span>
+                                <p class="text-slate-700 leading-relaxed font-normal">${item.topic}</p>
+                            </div>
+
+                            <div class="flex items-center gap-2 pt-0.5">
+                                <span class="text-slate-400 font-bold whitespace-nowrap min-w-[75px]"><i class="fa-solid fa-user-tag text-slate-400 ml-1"></i>الإحالة للمختص:</span>
+                                <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-medium text-[11px] border border-slate-200">${item.department}</span>
+                            </div>
+                        </div>
+
+                        <!-- Audit Trail Box -->
+                        ${auditTrailHtml}
+
+                        <!-- Action Bar (WhatsApp & Copy) -->
+                        <div class="mt-3.5 pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
+                            <button 
+                                onclick="shareOnWhatsApp(${item.id})"
+                                class="flex-1 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition"
+                            >
+                                <i class="fa-brands fa-whatsapp text-sm"></i>
+                                <span>مشاركة على واتساب</span>
+                            </button>
+
+                            <button 
+                                onclick="copyCardText(${item.id})"
+                                title="نسخ البيانات كنص" 
+                                class="px-3 py-2 bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 rounded-xl font-medium text-xs flex items-center gap-1.5 transition border border-slate-200"
+                            >
+                                <i class="fa-regular fa-copy"></i>
+                                <span class="hidden sm:inline">نسخ</span>
+                            </button>
+                        </div>
+
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // WhatsApp Daily Summary Report Generator
+        function shareDailyReportWhatsApp() {
+            const todayIncoming = document.getElementById('dailyIncomingCount').innerText;
+            const todayOutgoing = document.getElementById('dailyOutgoingCount').innerText;
+            const todayResolved = document.getElementById('dailyResolvedCount').innerText;
+            const dateBadge = document.getElementById('currentDateBadge').innerText;
+
+            const text = `*📊 تقرير موقف مكاتبات اللجنة اليومي*
+🏛 *لجنة مبيدات الآفات الزراعية - APC*
+📅 *التاريخ:* ${dateBadge}
+━━━━━━━━━━━━━━━━━━━━
+📥 *إجمالي وارد اليوم:* ${todayIncoming} خطاب
+📤 *إجمالي صادر اليوم:* ${todayOutgoing} خطاب
+✅ *مكاتبات تم إنجازها والرد عليها اليوم:* ${todayResolved} معاملة
+
+📌 *أهم المكاتبات الصادرة اليوم:*
+1️⃣ وارد (9040): تم التصدير برقم (1482) إلى *جمارك الإسكندرية / سينجينتا*
+2️⃣ وارد (9041): تم التصدير برقم (1485) إلى *شركة شورى للكيماويات*
+3️⃣ وارد (9043): تم التصدير برقم (1489) إلى *شركة باير الشرق الأوسط*
+
+🔗 *للاستعلام وتتبع كافة المكاتبات مباشرة على الجوال:*
+[رابط منظومة المتابعة للجوال]
+━━━━━━━━━━━━━━━━━━━━
+_أمانة سر لجنة مبيدات الآفات الزراعية - الإدارة العليا_`;
+
+            const encoded = encodeURIComponent(text);
+            const url = `https://api.whatsapp.com/send?text=${encoded}`;
+            window.open(url, '_blank');
+        }
+
+        // WhatsApp Text Formatter
+        function generateWhatsAppText(item) {
+            const isDispatched = item.status === 'dispatched';
+            const statusSymbol = isDispatched ? "✅ تم الرد والتصدير" : "⏳ قيد الفحص والمتابعة";
+            
+            return `*📋 بطاقة خط سير مكاتبة - لجنة مبيدات الآفات*
+━━━━━━━━━━━━━━━━━━━━
+*🔹 رقم الوارد:* ${item.incomingNo} ${item.isToday ? '(وارد اليوم)' : ''}
+*📅 تاريخ الورود:* ${item.incomingDate}
+*🏢 الجهة الوارد منها:* ${item.senderEntity}
+*📝 الموضوع:* ${item.topic}
+*👤 الإحالة / المختص:* ${item.department}
+
+*🚦 موقف المعاملة:* ${statusSymbol}
+${isDispatched ? `*📤 رقم الصادر:* ${item.outgoingNo}\n*📅 تاريخ الصادر:* ${item.outgoingDate}\n*🏢 الصادر إليه:* ${item.recipientEntity}\n*📌 ملاحظات:* ${item.notes || 'تم الإنهاء'}` : `*📌 الملاحظات:* ${item.notes || 'قيد الفحص والمتابعة الفنية'}`}
+━━━━━━━━━━━━━━━━━━━━
+_منظومة متابعة المكاتبات - الإدارة العليا_`;
+        }
+
+        // Share via WhatsApp direct API link
+        function shareOnWhatsApp(id) {
+            const item = rawDatabase.find(x => x.id === id);
+            if (!item) return;
+
+            const text = generateWhatsAppText(item);
+            const encoded = encodeURIComponent(text);
+            const url = `https://api.whatsapp.com/send?text=${encoded}`;
+            window.open(url, '_blank');
+        }
+
+        // Copy card text to clipboard
+        function copyCardText(id) {
+            const item = rawDatabase.find(x => x.id === id);
+            if (!item) return;
+
+            const text = generateWhatsAppText(item);
+            
+            // Clipboard Fallback Strategy
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast("تم نسخ بطاقة المكاتبة! يمكنك لصقها بالواتساب");
+            } catch (err) {
+                showToast("تعذر النسخ التلقائي");
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
+
+        // Toast feedback
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = msg;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+
+        // Refresh simulation
+        function refreshData() {
+            const icon = document.getElementById('syncIcon');
+            icon.classList.add('fa-spin');
+            setTimeout(() => {
+                icon.classList.remove('fa-spin');
+                showToast("تم تحديث ومزامنة سجلات خط السير بنجاح");
+            }, 700);
+        }
+    </script>
+</body>
+</html>
