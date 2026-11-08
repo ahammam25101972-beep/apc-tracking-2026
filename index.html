@@ -127,7 +127,17 @@
     .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 0.68rem; font-weight: 700; text-decoration: none; cursor: pointer; }
     .nav-item.active { color: var(--primary); }
     .nav-item i { font-size: 1.15rem; margin-bottom: 2px; }
-  </style>
+  
+    .doc-btn {
+      background: #f1f5f9; color: var(--primary); border: 1.5px solid #cbd5e1;
+      padding: 5px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 800;
+      display: inline-flex; align-items: center; gap: 5px; cursor: pointer;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .doc-btn:hover { background: #e2e8f0; border-color: var(--primary); }
+    .wared-clickable { cursor: pointer; transition: opacity 0.2s; }
+    .wared-clickable:hover { opacity: 0.8; text-decoration: underline; }
+</style>
 </head>
 <body>
 
@@ -280,7 +290,7 @@
         return `
           <div class="trans-card">
             <div class="card-head">
-              <span class="wared-tag"><i class="fa-solid fa-file-arrow-down"></i> وارد رقم: ${wared}</span>
+              <span class="wared-tag wared-clickable" onclick="openWaredDoc('${wared}')" title="اضغط لفتح أصل الخطاب في Google Drive"><i class="fa-solid fa-file-pdf" style="color:#ef4444;"></i> وارد رقم: ${wared} <span style="font-size:0.72rem;color:#0284c7;text-decoration:underline;margin-right:4px;">(عرض 📄)</span></span>
               <span class="badge ${isDone ? 'badge-done' : 'badge-wait'}">
                 ${isDone ? '✅ تم الرد والتصدير' : '⏳ قيد المتابعة'}
               </span>
@@ -417,6 +427,16 @@
 
     // Initial search and display
     handleSearch();
-  </script>
+  
+    const DRIVE_FOLDER_ID = "1N7vpwyMebqk3tMYPxu48Be-y5m4sviHL";
+
+    function openWaredDoc(waredNum) {
+      if (!waredNum) return;
+      // Search Google Drive directly for the exact wared filename (e.g. 94.pdf or 94)
+      const query = encodeURIComponent(`name:${waredNum}.pdf or "${waredNum}"`);
+      const driveUrl = `https://drive.google.com/drive/search?q=${query}`;
+      window.open(driveUrl, '_blank');
+    }
+</script>
 </body>
 </html>
