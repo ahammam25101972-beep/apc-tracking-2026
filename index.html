@@ -137,6 +137,55 @@
     .doc-btn:hover { background: #e2e8f0; border-color: var(--primary); }
     .wared-clickable { cursor: pointer; transition: opacity 0.2s; }
     .wared-clickable:hover { opacity: 0.8; text-decoration: underline; }
+
+    /* In-App Document Viewer Modal */
+    .doc-modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75);
+      z-index: 100; align-items: center; justify-content: center; padding: 12px;
+      backdrop-filter: blur(4px);
+    }
+    .doc-modal {
+      background: #ffffff; width: 100%; max-width: 600px; max-height: 90vh;
+      border-radius: 18px; overflow: hidden; display: flex; flex-direction: column;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); border: 2px solid var(--primary);
+      animation: modalFadeIn 0.25s ease-out;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-header {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      color: white; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-header h3 { font-size: 0.95rem; font-weight: 800; display: flex; align-items: center; gap: 8px; margin: 0; }
+    .modal-close-btn {
+      background: rgba(255, 255, 255, 0.2); border: none; color: white; width: 30px; height: 30px;
+      border-radius: 50%; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .modal-body {
+      padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px;
+    }
+    .modal-info-card {
+      background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px;
+      font-size: 0.8rem; line-height: 1.6;
+    }
+    .modal-info-row { display: flex; gap: 6px; margin-bottom: 4px; }
+    .modal-info-row strong { color: var(--primary); min-width: 65px; }
+    .modal-actions {
+      display: flex; flex-direction: column; gap: 10px; margin-top: 6px;
+    }
+    .modal-view-btn {
+      background: var(--primary); color: white; border: none; padding: 12px; border-radius: 10px;
+      font-size: 0.88rem; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px;
+      cursor: pointer; text-decoration: none;
+    }
+    .modal-search-btn {
+      background: #f1f5f9; color: var(--text); border: 1px solid var(--border); padding: 10px; border-radius: 10px;
+      font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px;
+      cursor: pointer; text-decoration: none;
+    }
+
 </style>
 </head>
 <body>
@@ -196,7 +245,7 @@
   <div class="search-box">
     <div class="search-wrapper">
       <i class="fa-solid fa-magnifying-glass search-icon"></i>
-      <input type="text" id="searchInput" placeholder="ابحث برقم الوارد، الصادر، اسم الجهة أو المبيد..." oninput="handleSearch()">
+      <input type="text" id="searchInput" placeholder="ابحث برقم الوارد، الصادر، الجهة، الموضوع، المبيد، الموظف، أو القسم..." oninput="handleSearch()">
       <i class="fa-solid fa-circle-xmark clear-icon" id="clearBtn" onclick="clearSearch()"></i>
     </div>
   </div>
@@ -428,15 +477,76 @@
     // Initial search and display
     handleSearch();
   
-    const DRIVE_FOLDER_ID = "1N7vpwyMebqk3tMYPxu48Be-y5m4sviHL";
-
     function openWaredDoc(waredNum) {
       if (!waredNum) return;
-      // Search Google Drive directly for the exact wared filename (e.g. 94.pdf or 94)
-      const query = encodeURIComponent(`name:${waredNum}.pdf or "${waredNum}"`);
-      const driveUrl = `https://drive.google.com/drive/search?q=${query}`;
-      window.open(driveUrl, '_blank');
+      const item = RAW_DATA.find(r => r[0] === String(waredNum));
+      if (!item) return;
+
+      const wared = item[0];
+      const date = item[1] || '-';
+      const sender = item[2] || 'جهة غير محددة';
+      const subject = item[3] || 'بدون موضوع مدون';
+      const pesticide = item[4] || '-';
+      const officer = item[5] || 'غير محدد';
+      const isDone = item[6] === 1;
+      const sader = item[7] || '-';
+
+      document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-file-pdf" style="color:var(--gold-light);"></i> مكاتبة وارد رقم: ${wared}`;
+
+      document.getElementById('modalInfoCard').innerHTML = `
+        <div class="modal-info-row"><strong>الموضوع:</strong> <span>${subject}</span></div>
+        <div class="modal-info-row"><strong>الجهة:</strong> <span>${sender}</span></div>
+        ${pesticide !== '-' ? `<div class="modal-info-row"><strong>المبيد:</strong> <span>${pesticide}</span></div>` : ''}
+        <div class="modal-info-row"><strong>تاريخ الورود:</strong> <span>${date}</span></div>
+        <div class="modal-info-row"><strong>المختص:</strong> <span>${officer}</span></div>
+        <div class="modal-info-row"><strong>الموقف:</strong> <span style="font-weight:800;color:${isDone ? 'var(--success)' : 'var(--warning)'};">${isDone ? 'تم الرد والتصدير (صادر: ' + sader + ')' : 'قيد الفحص والمتابعة'}</span></div>
+      `;
+
+      // Clean folder search link
+      const directFolderUrl = `https://drive.google.com/drive/folders/1N7vpwyMebqk3tMYPxu48Be-y5m4sviHL`;
+      const directSearchUrl = `https://drive.google.com/drive/folders/1N7vpwyMebqk3tMYPxu48Be-y5m4sviHL?q=${encodeURIComponent(wared)}`;
+
+      document.getElementById('modalActions').innerHTML = `
+        <a href="${directSearchUrl}" target="_blank" class="modal-view-btn">
+          <i class="fa-solid fa-file-magnifying-glass"></i> فتح أصل الخطاب المسجل برقم (${wared})
+        </a>
+        <a href="${directFolderUrl}" target="_blank" class="modal-search-btn">
+          <i class="fa-solid fa-folder-tree"></i> تصفح مجلد الأرشيف العام للمكاتبات
+        </a>
+        <button type="button" class="whatsapp-btn" style="margin-top:0;" onclick="shareToWhatsApp('${wared}', '${date}', '${encodeURIComponent(sender)}', '${encodeURIComponent(subject)}', '${encodeURIComponent(officer)}', '${isDone ? '1' : '0'}', '${encodeURIComponent(sader)}', '${encodeURIComponent(item[8] || '')}')">
+          <i class="fa-brands fa-whatsapp"></i> مشاركة بطاقة المكاتبة كاملة عبر واتساب
+        </button>
+      `;
+
+      const overlay = document.getElementById('docModalOverlay');
+      overlay.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDocModal(event) {
+      const overlay = document.getElementById('docModalOverlay');
+      overlay.style.display = 'none';
+      document.body.style.overflow = '';
     }
 </script>
+
+  <!-- In-App Document Viewer Modal -->
+  <div class="doc-modal-overlay" id="docModalOverlay" onclick="closeDocModal(event)">
+    <div class="doc-modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="modalTitle"><i class="fa-solid fa-file-shield" style="color:var(--gold);"></i> معاينة مستند المكاتبة</h3>
+        <button class="modal-close-btn" onclick="closeDocModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-info-card" id="modalInfoCard">
+          <!-- Populated by JS -->
+        </div>
+        <div class="modal-actions" id="modalActions">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
